@@ -159,142 +159,146 @@ export function Home({ go }: { go: (v: AppView) => void }) {
 /* ---------------------------------------------------------------- browse */
 
 export function Browse({ go }: { go: (v: AppView) => void }) {
-  const [sport, setSport] = useState<string>("All")
-  const sports = ["All", "Football", "Padel", "Tennis", "Badminton"]
-  const visible = slots.filter((s) => {
-    const c = courtById(s.courtId)
-    return s.available && (sport === "All" || c?.sport === sport)
-  })
-
-  /* Promos are interleaved into the list rather than pinned above it, so they
-     are met while scanning and read as one of the options. */
-  const rows: Array<{ slot?: Slot; promoIndex?: number }> = []
-  visible.forEach((slot, i) => {
-    rows.push({ slot })
-    const promo = promos.find((p) => p.afterIndex === i + 1)
-    if (promo) rows.push({ promoIndex: promos.indexOf(promo) })
-  })
+  const bySport: { sport: string; courts: { court: Court; next: Slot }[] }[] = []
+  for (const sport of ["Padel", "Football", "Tennis", "Badminton"]) {
+    const seen = new Map<string, { court: Court; next: Slot }>()
+    for (const slot of slots) {
+      if (!slot.available) continue
+      const court = courtById(slot.courtId)
+      if (!court || court.sport !== sport || seen.has(court.id)) continue
+      seen.set(court.id, { court, next: slot })
+    }
+    if (seen.size) bySport.push({ sport, courts: [...seen.values()] })
+  }
 
   return (
-    <Screen>
-      <TopBar title="Available courts" onBack={() => go({ name: "home" })} />
-
-      <div className="flex shrink-0 gap-2 overflow-x-auto pb-3" style={{ scrollbarWidth: "none" }}>
-        {sports.map((s) => (
-          <button
-            key={s}
-            type="button"
-            onClick={() => setSport(s)}
-            className={`shrink-0 rounded-[var(--radius-pill)] px-3.5 py-2 ${TYPE.control}`}
-            style={
-              s === sport
-                ? { background: "var(--color-brand-600)", color: COLOR.inverse }
-                : { background: COLOR.surface, color: COLOR.muted }
-            }
-          >
-            {s}
-          </button>
-        ))}
+    <Screen pad={false}>
+      <div className="px-5 pb-1 pt-6">
+        <h1
+          style={{
+            fontFamily: "var(--font-family-display)", fontWeight: 400, fontSize: 32,
+            lineHeight: "38px", letterSpacing: "-0.3px", color: COLOR.text,
+          }}
+        >
+          Book new
+          <br />
+          appointment
+        </h1>
       </div>
 
-      <div className="flex shrink-0 items-center justify-between pb-3">
-        <span className={TYPE.meta} style={{ color: COLOR.muted }}>
-          Sun 14 Dec · {visible.length} available
-        </span>
-        <button type="button" className={`flex items-center gap-1.5 ${TYPE.control}`} style={{ color: COLOR.text }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <path d="M4 6h16M7 12h10M10 18h4" />
-          </svg>
-          Filter
+      {/* Search panel — the inputs resolve the browse, rather than filtering
+          a list that is already on screen. */}
+      <div className="mx-1.5 mt-4 rounded-[20px] p-3.5" style={{ background: COLOR.surface }}>
+        <div className="grid grid-cols-2 gap-3">
+          {[
+            ["Check In", "calendar"], ["Check Out", "calendar"],
+            ["Type", "chevron"], ["Price", "chevron"],
+          ].map(([label, icon]) => (
+            <span
+              key={label}
+              className="flex h-14 items-center gap-2 rounded-[14px] px-4"
+              style={{ background: "var(--color-brand-50)" }}
+            >
+              <span className="flex-1" style={{ fontSize: 15, fontWeight: 500, color: COLOR.text }}>
+                {label}
+              </span>
+              {icon === "calendar" ? (
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke={COLOR.muted} strokeWidth="1.5" strokeLinecap="round">
+                  <rect x="2" y="4" width="16" height="14" rx="2" /><path d="M2 8h16M6 2v4M14 2v4" />
+                </svg>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke={COLOR.muted} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 6l4 4 4-4" />
+                </svg>
+              )}
+            </span>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="mt-3 flex h-14 w-full items-center justify-center rounded-[14px]"
+          style={{ background: COLOR.text, color: COLOR.inverse, fontSize: 15, fontWeight: 500 }}
+        >
+          Search courts
         </button>
       </div>
 
-      <div className="flex flex-col gap-3 pb-8">
-        {rows.map((row, i) =>
-          row.slot ? (
-            <SlotCard key={row.slot.id} slot={row.slot} go={go} />
-          ) : (
-            <PromoCard key={`p${i}`} index={row.promoIndex!} />
-          ),
-        )}
-      </div>
+      {/* One horizontally scrolling rail per sport. */}
+      {bySport.map(({ sport, courts: list }) => (
+        <section key={sport} className="mt-8">
+          <h2 className="px-5 pb-4" style={{ fontSize: 18, fontWeight: 500, color: COLOR.text }}>
+            {sport}
+          </h2>
+          <div
+            className="flex gap-3.5 overflow-x-auto px-5 pb-1"
+            style={{ scrollbarWidth: "none" }}
+          >
+            {list.map(({ court, next }, i) => (
+              <CourtCard
+                key={court.id}
+                court={court}
+                next={next}
+                go={go}
+                badge={i === 0 ? "15% Off" : undefined}
+              />
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <div className="h-10" />
     </Screen>
   )
 }
 
-function SlotCard({ slot, go }: { slot: Slot; go: (v: AppView) => void }) {
-  const court = courtById(slot.courtId)!
+/**
+ * A court card: white shell with the photo inset, so the card's own white
+ * carries the type rather than the photograph running to its edge.
+ */
+function CourtCard({
+  court, next, go, badge,
+}: { court: Court; next: Slot; go: (v: AppView) => void; badge?: string }) {
   return (
-    <Card padded={false} onClick={() => go({ name: "court", courtId: court.id })}>
-      <div className="relative">
-        <CourtImage kind={court.image} height={130} sport={court.sport} />
-        <span className="absolute left-3 top-3">
-          <Pill tone="neutral">{court.sport}</Pill>
-        </span>
-        {slot.discountPct && (
-          <span className="absolute right-3 top-3">
-            <Pill tone="danger">−{slot.discountPct}%</Pill>
-          </span>
-        )}
-      </div>
-      <div className="flex items-end justify-between gap-3 p-4">
-        <div className="flex min-w-0 flex-col gap-0.5">
-          <span className={TYPE.itemName} style={{ color: COLOR.text }}>{court.name}</span>
-          <span className={TYPE.meta} style={{ color: COLOR.muted }}>
-            {slot.start}–{slot.end} · up to {court.capacity} players
-          </span>
-        </div>
-        <span className="shrink-0 text-right">
-          <span className="numeric block" style={{ fontFamily: "var(--font-family-display)", fontWeight: 600, fontSize: 18, color: COLOR.text }}>
-            {money(court.pricePerHour)}
-          </span>
-          <span className={TYPE.meta} style={{ color: COLOR.faint }}>per hour</span>
-        </span>
-      </div>
-    </Card>
-  )
-}
-
-function PromoCard({ index }: { index: number }) {
-  const p = promos[index]
-  const isPerk = p.kind === "perk"
-  return (
-    <div
-      className="flex items-center gap-3 p-4"
-      style={{
-        background: isPerk ? "var(--color-trust-surface)" : COLOR.surface,
-        borderRadius: "var(--radius-panel)",
-        outline: isPerk ? "none" : `1px dashed ${COLOR.border}`,
-      }}
+    <button
+      type="button"
+      onClick={() => go({ name: "court", courtId: court.id })}
+      className="shrink-0 overflow-hidden rounded-[20px] text-left"
+      style={{ width: 236, background: COLOR.surface }}
     >
-      <span
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-pill)]"
-        style={{
-          background: isPerk ? "var(--color-trust)" : COLOR.dangerSurface,
-          color: isPerk ? COLOR.inverse : COLOR.danger,
-        }}
-      >
-        {p.kind === "perk" ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 9h11v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4Z" /><path d="M16 10h2a2 2 0 0 1 0 4h-2" />
-          </svg>
-        ) : p.kind === "cancellation" ? (
-          /* A freed slot: a clock turning back. */
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
-          </svg>
-        ) : (
-          /* Invite: a person with a plus. */
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="10" cy="8" r="3.2" /><path d="M3.5 19c0-3 2.9-5 6.5-5" /><path d="M17 13v6M14 16h6" />
-          </svg>
+      <div className="relative m-3 overflow-hidden rounded-[14px]" style={{ height: 180 }}>
+        <img
+          src={court.photo}
+          alt=""
+          className="h-full w-full object-cover"
+        />
+        {badge && (
+          <span
+            className="absolute left-2.5 top-2.5 rounded-[14px] px-3 py-1.5"
+            style={{ background: COLOR.surface, fontSize: 12, fontWeight: 500, color: COLOR.text }}
+          >
+            {badge}
+          </span>
         )}
-      </span>
-      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span className={TYPE.itemName} style={{ color: COLOR.text }}>{p.headline}</span>
-        <span className={TYPE.meta} style={{ color: COLOR.muted }}>{p.detail}</span>
       </div>
-    </div>
+
+      {/* 16px inset and generous leading — the card breathes rather than
+          packing the text against its edges. */}
+      <div className="flex flex-col gap-1.5 px-4 pb-5">
+        <span className="flex items-center gap-1.5">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="var(--color-trust)">
+            <path d="M7 0l2 4.4 4.8.6-3.5 3.3.9 4.7L7 10.8 2.8 13l.9-4.7L.2 5l4.8-.6z" />
+          </svg>
+          <span style={{ fontSize: 15, fontWeight: 500, color: COLOR.text }}>{court.rating}</span>
+          <span style={{ fontSize: 14, color: COLOR.faint }}>({court.reviews})</span>
+        </span>
+        <span style={{ fontSize: 20, fontWeight: 500, lineHeight: "26px", color: COLOR.text }}>
+          {court.name}
+        </span>
+        <span style={{ fontSize: 14, lineHeight: "20px", color: COLOR.muted }}>
+          Next free {next.start} · AED {court.pricePerHour}
+        </span>
+      </div>
+    </button>
   )
 }
 

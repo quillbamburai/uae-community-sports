@@ -1,20 +1,15 @@
 import type { Metadata } from "next"
-import { Inter, Sora } from "next/font/google"
+import localFont from "next/font/local"
 import "./globals.css"
 
-/* Self-hosted by next/font — no network request at render, so the fonts are
-   present on first paint rather than swapping in. */
-const sora = Sora({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-sora",
-  display: "swap",
-})
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-inter",
+/* Alliance No.1 — the brand face. Self-hosted from public/fonts. */
+const alliance = localFont({
+  src: [
+    { path: "../public/fonts/alliance/AllianceNo1-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../public/fonts/alliance/AllianceNo1-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../public/fonts/alliance/AllianceNo1-SemiBold.woff2", weight: "600", style: "normal" },
+  ],
+  variable: "--font-alliance",
   display: "swap",
 })
 
@@ -25,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-GB" className={`${sora.variable} ${inter.variable}`}>
+    <html lang="en-GB" className={alliance.variable}>
       <body>{children}</body>
     </html>
   )

@@ -35,32 +35,38 @@ export const courts: Court[] = [
   {
     id: "pitch-3", name: "Al Rahba Pitch 3", sport: "Football", capacity: 12,
     surface: "3G artificial", amenities: ["Floodlit", "Changing rooms", "Parking"],
-    image: "football-1", pricePerHour: 180,
+    image: "football-1", photo: "/images/football-outside.jpg", rating: "4.7", reviews: 302,
+    pricePerHour: 180,
   },
   {
     id: "pitch-1", name: "Al Rahba Pitch 1", sport: "Football", capacity: 12,
     surface: "3G artificial", amenities: ["Floodlit", "Changing rooms", "Spectator seating"],
-    image: "football-2", pricePerHour: 180,
+    image: "football-2", photo: "/images/football-outside2.jpeg", rating: "4.5", reviews: 96,
+    pricePerHour: 180,
   },
   {
     id: "padel-1", name: "Marina Padel 1", sport: "Padel", capacity: 4,
     surface: "Glass court", amenities: ["Floodlit", "Racket hire"],
-    image: "padel-1", pricePerHour: 120,
+    image: "padel-1", photo: "/images/Padel1.png", rating: "4.8", reviews: 214,
+    pricePerHour: 120,
   },
   {
     id: "padel-2", name: "Marina Padel 2", sport: "Padel", capacity: 4,
     surface: "Glass court", amenities: ["Floodlit", "Racket hire", "Covered"],
-    image: "padel-2", pricePerHour: 140,
+    image: "padel-2", photo: "/images/padel2.jpg", rating: "4.6", reviews: 180,
+    pricePerHour: 140,
   },
   {
     id: "tennis-2", name: "Corniche Court 2", sport: "Tennis", capacity: 4,
     surface: "Acrylic hard", amenities: ["Floodlit", "Ball machine"],
-    image: "tennis-1", pricePerHour: 100,
+    image: "tennis-1", photo: "/images/Tennis1.png", rating: "4.4", reviews: 138,
+    pricePerHour: 100,
   },
   {
     id: "badminton-4", name: "Community Hall 4", sport: "Badminton", capacity: 4,
     surface: "Sprung timber", amenities: ["Indoor", "Air conditioned", "Racket hire"],
-    image: "badminton-1", pricePerHour: 80,
+    image: "badminton-1", photo: "/images/Tennis1.png", rating: "4.3", reviews: 74,
+    pricePerHour: 80,
   },
 ]
 

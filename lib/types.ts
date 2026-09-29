@@ -20,6 +20,11 @@ export type Court = {
   surface: string
   amenities: string[]
   image: string
+  /** Photograph in public/images. */
+  photo: string
+  /** Community rating — shown on the browse card. */
+  rating: string
+  reviews: number
   pricePerHour: number
 }
 

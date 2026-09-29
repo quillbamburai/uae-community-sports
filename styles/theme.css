@@ -24,27 +24,27 @@
      =============================================================== */
 
   /* Neutral — surfaces, text, borders. The workhorse ramp. */
-  --color-neutral-50: #FAF9F7;
-  --color-neutral-100: #F1EFEC;
-  --color-neutral-200: #E0DDD7;
-  --color-neutral-300: #C2BDB4;
+  --color-neutral-50: #FFFFFF;
+  --color-neutral-100: #C6CCD2;
+  --color-neutral-200: #E0E4EA;
+  --color-neutral-300: #A9B2BD;
   --color-neutral-400: #9C968B;
-  --color-neutral-500: #7B7568;
+  --color-neutral-500: #5E6B7A;
   --color-neutral-600: #5E594F;
   --color-neutral-700: #47433B;
   --color-neutral-800: #34312B;
   --color-neutral-900: #26231F;
-  --color-neutral-950: #1A1815;
+  --color-neutral-950: #0E1A2B;
 
   /* Brand — the primary accent. Data, primary actions, selected states. */
-  --color-brand-50: #EDF6F1;
+  --color-brand-50: #EEF0F6;
   --color-brand-100: #D3E9DE;
   --color-brand-200: #A6D3BE;
   --color-brand-300: #71B698;
   --color-brand-400: #429576;
   --color-brand-500: #27795C;
-  --color-brand-600: #1B6149;
-  --color-brand-700: #1A4E3C;
+  --color-brand-600: #0E1A2B;
+  --color-brand-700: #062D48;
   --color-brand-800: #194132;
   --color-brand-900: #17372B;
   --color-brand-950: #0C2119;
@@ -100,8 +100,8 @@
 
   /* Trust: the score's own accent. Deliberately not the brand green — a
      person's standing is not the same signal as "this action succeeded". */
-  --color-trust: #A67C2E;
-  --color-trust-surface: #FBF4E6;
+  --color-trust: #E7AC91;
+  --color-trust-surface: #FDF1EA;
   --color-trust-track: var(--color-neutral-200);
 
   /* ===============================================================
@@ -110,8 +110,8 @@
      everything else.
      =============================================================== */
 
-  --font-family-display: var(--font-sora), system-ui, sans-serif;
-  --font-family-body: var(--font-inter), system-ui, sans-serif;
+  --font-family-display: var(--font-alliance), system-ui, sans-serif;
+  --font-family-body: var(--font-alliance), system-ui, sans-serif;
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;
