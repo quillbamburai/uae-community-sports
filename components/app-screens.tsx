@@ -14,6 +14,7 @@ export type AppView =
   | { name: "browse" }
   | { name: "court"; courtId: string }
   | { name: "confirm"; courtId: string; slotId: string }
+  | { name: "pay"; courtId: string; slotId: string }
   | { name: "success"; courtId: string; slotId: string }
   | { name: "walkin" }
   | { name: "trust" }
@@ -383,7 +384,6 @@ export function Confirm({
 }: { courtId: string; slotId: string; go: (v: AppView) => void }) {
   const court = courtById(courtId)!
   const slot = slots.find((s) => s.id === slotId)!
-  const [paying, setPaying] = useState(false)
 
   const price = slot.discountPct
     ? Math.round(court.pricePerHour * (1 - slot.discountPct / 100))
@@ -444,14 +444,8 @@ export function Confirm({
         </Card>
 
         <div className="mt-auto flex flex-col gap-2">
-          <Button
-            disabled={paying}
-            onClick={() => {
-              setPaying(true)
-              setTimeout(() => go({ name: "success", courtId, slotId }), 1200)
-            }}
-          >
-            {paying ? "Confirming…" : `Confirm and pay ${money(price)}`}
+          <Button onClick={() => go({ name: "pay", courtId, slotId })}>
+            Continue to payment
           </Button>
           <span className={`text-center ${TYPE.meta}`} style={{ color: COLOR.faint }}>
             Free cancellation up to 2 hours before
@@ -475,6 +469,100 @@ function addMinutes(hhmm: string, mins: number) {
   const [h, m] = hhmm.split(":").map(Number)
   const t = h * 60 + m + mins
   return `${String(Math.floor(t / 60) % 24).padStart(2, "0")}:${String(t % 60).padStart(2, "0")}`
+}
+
+
+/* --------------------------------------------------------------- payment */
+
+const METHODS = [
+  { id: "apple", label: "Apple Pay", detail: "Face ID" },
+  { id: "card", label: "Visa ···· 4821", detail: "Expires 04/28" },
+  { id: "pot", label: "Club credit", detail: "AED 140 in the pot" },
+]
+
+export function Payment({
+  courtId, slotId, go,
+}: { courtId: string; slotId: string; go: (v: AppView) => void }) {
+  const court = courtById(courtId)!
+  const slot = slots.find((s) => s.id === slotId)!
+  const [method, setMethod] = useState("apple")
+  const [paying, setPaying] = useState(false)
+
+  const price = slot.discountPct
+    ? Math.round(court.pricePerHour * (1 - slot.discountPct / 100))
+    : court.pricePerHour
+  const usingPot = method === "pot"
+  const fromPot = usingPot ? Math.min(user.potCredit, price) : 0
+  const due = price - fromPot
+
+  return (
+    <Screen>
+      <TopBar title="Payment" onBack={() => go({ name: "confirm", courtId, slotId })} />
+      <div className="flex flex-1 flex-col gap-3 pb-8">
+        <div className="flex flex-col gap-2.5">
+          <SectionLabel>Pay with</SectionLabel>
+          {METHODS.map((m) => {
+            const on = m.id === method
+            return (
+              <button
+                key={m.id}
+                type="button"
+                onClick={() => setMethod(m.id)}
+                className="flex items-center gap-3 p-4 text-left"
+                style={{
+                  background: COLOR.surface,
+                  borderRadius: "var(--radius-panel)",
+                  outline: on ? `1.5px solid var(--color-brand-600)` : `1px solid transparent`,
+                }}
+              >
+                <span
+                  className="flex h-4 w-4 shrink-0 items-center justify-center rounded-[var(--radius-pill)]"
+                  style={{ border: `1.5px solid ${on ? "var(--color-brand-600)" : COLOR.bar}` }}
+                >
+                  {on && <span className="h-1.5 w-1.5 rounded-[var(--radius-pill)]" style={{ background: "var(--color-brand-600)" }} />}
+                </span>
+                <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                  <span className={TYPE.itemName} style={{ color: COLOR.text }}>{m.label}</span>
+                  <span className={TYPE.meta} style={{ color: COLOR.muted }}>{m.detail}</span>
+                </span>
+              </button>
+            )
+          })}
+        </div>
+
+        <Card>
+          <div className="flex flex-col gap-3">
+            <Row label={`${court.name} · ${slot.start}`} value={money(court.pricePerHour)} />
+            {slot.discountPct && (
+              <Row label={`Cancellation discount (${slot.discountPct}%)`} value={`−${money(court.pricePerHour - price)}`} />
+            )}
+            {usingPot && <Row label="From club credit" value={`−${money(fromPot)}`} />}
+            <div className="mt-1 flex items-baseline justify-between border-t pt-3" style={{ borderColor: COLOR.hairline }}>
+              <span className={TYPE.itemName} style={{ color: COLOR.text }}>Due now</span>
+              <span className="numeric" style={{ fontFamily: "var(--font-family-display)", fontWeight: 600, fontSize: 24, color: COLOR.text }}>
+                {money(due)}
+              </span>
+            </div>
+          </div>
+        </Card>
+
+        <div className="mt-auto flex flex-col gap-2">
+          <Button
+            disabled={paying}
+            onClick={() => {
+              setPaying(true)
+              setTimeout(() => go({ name: "success", courtId, slotId }), 1400)
+            }}
+          >
+            {paying ? "Processing…" : `Pay ${money(due)}`}
+          </Button>
+          <span className={`text-center ${TYPE.meta}`} style={{ color: COLOR.faint }}>
+            Refunded in full if you cancel more than 2 hours ahead
+          </span>
+        </div>
+      </div>
+    </Screen>
+  )
 }
 
 /* --------------------------------------------------------------- success */
@@ -508,8 +596,30 @@ export function Success({
           </span>
         </div>
 
+        {/* What honouring this booking is worth — the incentive stated at the
+            moment the commitment is made, not after the fact. */}
+        <div className="flex w-full items-center gap-3 p-4" style={{ background: "var(--color-trust-surface)", borderRadius: "var(--radius-panel)" }}>
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-pill)]" style={{ background: "var(--color-trust)", color: COLOR.inverse }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 3 4 6.5v5c0 4.2 3.2 7.6 8 8.5 4.8-.9 8-4.3 8-8.5v-5Z" />
+            </svg>
+          </span>
+          <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+            <span className={TYPE.itemName} style={{ color: COLOR.text }}>
+              Check in on time for +2
+            </span>
+            <span className={TYPE.meta} style={{ color: COLOR.muted }}>
+              {user.trustScore} → {user.trustScore + 2}. Two more bookings reaches Trusted.
+            </span>
+          </span>
+        </div>
+
         <div className="flex w-full flex-col gap-2">
           <Button variant="secondary">Add to calendar</Button>
+          {/* Demo shortcut: jump to the state after the session has been played. */}
+          <Button variant="quiet" onClick={() => go({ name: "post-session" })}>
+            Skip ahead — after the session
+          </Button>
           <Button variant="quiet" onClick={() => go({ name: "home" })}>Done</Button>
         </div>
       </div>
