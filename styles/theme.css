@@ -1,0 +1,384 @@
+/* Community Sports — design tokens.
+ *
+ * Structure carried from the foundations kit; palette set for a UAE
+ * government civic utility. Deep institutional green, warm neutrals, and a
+ * separate accent for the trust score.
+ *
+ * This file is the governance layer: it defines WHAT tokens exist and what
+ * each one is for. It does not decide what they look like.
+ *
+ * To start a project:
+ *   1. Replace the ramps in PRIMITIVES with the brand's palette.
+ *   2. Point the SEMANTIC tokens at whichever ramp steps suit.
+ *   3. Set the two font families.
+ * Everything below that — the type scale, radii, spacing and utility
+ * classes — is structural and should not need editing.
+ */
+
+:root {
+  /* ===============================================================
+     1 · PRIMITIVES — replace these
+     Each ramp runs 50 (lightest) to 950 (darkest). Eleven steps is
+     enough to carry a surface scale, a text scale and a state colour
+     without inventing values mid-build.
+     =============================================================== */
+
+  /* Neutral — surfaces, text, borders. The workhorse ramp. */
+  --color-neutral-50: #FAF9F7;
+  --color-neutral-100: #F1EFEC;
+  --color-neutral-200: #E0DDD7;
+  --color-neutral-300: #C2BDB4;
+  --color-neutral-400: #9C968B;
+  --color-neutral-500: #7B7568;
+  --color-neutral-600: #5E594F;
+  --color-neutral-700: #47433B;
+  --color-neutral-800: #34312B;
+  --color-neutral-900: #26231F;
+  --color-neutral-950: #1A1815;
+
+  /* Brand — the primary accent. Data, primary actions, selected states. */
+  --color-brand-50: #EDF6F1;
+  --color-brand-100: #D3E9DE;
+  --color-brand-200: #A6D3BE;
+  --color-brand-300: #71B698;
+  --color-brand-400: #429576;
+  --color-brand-500: #27795C;
+  --color-brand-600: #1B6149;
+  --color-brand-700: #1A4E3C;
+  --color-brand-800: #194132;
+  --color-brand-900: #17372B;
+  --color-brand-950: #0C2119;
+
+  /* Positive — success, delivered, complete. */
+  --color-positive-50: #F0F9F4;
+  --color-positive-500: #35B65A;
+  --color-positive-600: #2E9C4D;
+  --color-positive-900: #1B5C2E;
+
+  /* Caution — warnings, pending, at-risk. */
+  --color-caution-50: #FFF7E6;
+  --color-caution-200: #FFE099;
+  --color-caution-500: #CC841D;
+  --color-caution-900: #5B3416;
+
+  /* Critical — errors, exceptions, blocked. */
+  --color-critical-50: #FFECEC;
+  --color-critical-500: #D87A7A;
+  --color-critical-600: #C45B5B;
+  --color-critical-900: #703232;
+
+  /* ===============================================================
+     2 · SEMANTIC — point these at the ramps above
+     Components reference ONLY these names, never a raw ramp step.
+     That is what makes a rebrand one edit rather than a search.
+     =============================================================== */
+
+  --color-canvas: var(--color-neutral-100);
+  --color-surface: #FFFFFF;
+  --color-surface-well: var(--color-neutral-50);
+  --color-surface-border: var(--color-neutral-200);
+
+  --color-text-primary: var(--color-neutral-950);
+  --color-text-muted: var(--color-neutral-500);
+  --color-text-faint: var(--color-neutral-300);
+  --color-text-inverse: #FFFFFF;
+
+  --color-hairline: var(--color-neutral-200);
+  --color-bar: var(--color-neutral-200);
+
+  --color-success: var(--color-positive-600);
+  --color-success-surface: var(--color-positive-50);
+  --color-warning: var(--color-caution-500);
+  --color-warning-surface: var(--color-caution-50);
+  --color-danger: var(--color-critical-600);
+  --color-danger-surface: var(--color-critical-50);
+  --color-info: var(--color-brand-600);
+  --color-info-surface: var(--color-brand-50);
+
+  /* Data: the accent used by charts, donuts and share bars. */
+  --color-data-accent: var(--color-brand-600);
+
+  /* Trust: the score's own accent. Deliberately not the brand green — a
+     person's standing is not the same signal as "this action succeeded". */
+  --color-trust: #A67C2E;
+  --color-trust-surface: #FBF4E6;
+  --color-trust-track: var(--color-neutral-200);
+
+  /* ===============================================================
+     3 · TYPOGRAPHY — set the two families, keep the scale
+     One display face for headings and figures, one body face for
+     everything else.
+     =============================================================== */
+
+  --font-family-display: var(--font-sora), system-ui, sans-serif;
+  --font-family-body: var(--font-inter), system-ui, sans-serif;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Tracking. Percentages map 1:1 onto em. */
+  --letter-spacing-tightest: -0.09em;  /* large display figures only */
+  --letter-spacing-tighter: -0.02em;
+  --letter-spacing-tight: -0.01em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide: 0.02em;
+  --letter-spacing-wider: 0.04em;      /* uppercase subheadings */
+
+  /* Paragraph scale */
+  --text-paragraph-l-size: 18px;
+  --text-paragraph-l-line-height: 28px;
+  --text-paragraph-l-tracking: var(--letter-spacing-normal);
+  --text-paragraph-m-size: 16px;
+  --text-paragraph-m-line-height: 24px;
+  --text-paragraph-m-tracking: var(--letter-spacing-normal);
+  --text-paragraph-s-size: 14px;
+  --text-paragraph-s-line-height: 20px;
+  --text-paragraph-s-tracking: var(--letter-spacing-tighter);
+  --text-paragraph-xs-size: 12px;
+  --text-paragraph-xs-line-height: 16px;
+  --text-paragraph-xs-tracking: var(--letter-spacing-tight);
+
+  /* Button */
+  --text-button-l-size: 16px;
+  --text-button-l-line-height: 24px;
+  --text-button-l-tracking: var(--letter-spacing-normal);
+  --text-button-m-size: 14px;
+  --text-button-m-line-height: 20px;
+  --text-button-m-tracking: var(--letter-spacing-normal);
+  --text-button-s-size: 12px;
+  --text-button-s-line-height: 16px;
+  --text-button-s-tracking: var(--letter-spacing-normal);
+
+  /* Subheading — uppercase, positive tracking */
+  --text-subheading-xs-size: 12px;
+  --text-subheading-xs-line-height: 16px;
+  --text-subheading-xs-tracking: var(--letter-spacing-wider);
+  --text-subheading-2xs-size: 11px;
+  --text-subheading-2xs-line-height: 12px;
+  --text-subheading-2xs-tracking: var(--letter-spacing-wide);
+
+  /* Hero figure — the one large number per panel. */
+  --text-hero-figure-size: 36px;
+  --text-hero-figure-line-height: 40px;
+  --text-hero-figure-tracking: var(--letter-spacing-tightest);
+
+  /* ===============================================================
+     4 · SHAPE & SPACE — structural, rarely changed
+     =============================================================== */
+
+  /* Radius, named by role rather than size, so the name says where it
+     belongs: control < field < well < panel < pill. */
+  --radius-control: 6px;
+  --radius-field: 8px;
+  --radius-well: 12px;
+  --radius-panel: 16px;
+  --radius-pill: 9999px;
+
+  /* Elevation. One shadow: anything floating above the canvas uses it,
+     so every overlay reads as the same layer. */
+  --shadow-overlay: 0 8px 28px rgba(28, 28, 28, 0.12), 0 1px 3px rgba(28, 28, 28, 0.06);
+
+  /* Spacing, 4px based. --space-4 (16px) is the application gutter. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+
+  /* ===============================================================
+     5 · LAYOUT — the rules a screen inherits
+     Set once here rather than re-decided per screen.
+     =============================================================== */
+
+  --layout-rail-width: 64px;      /* fixed, never collapses */
+  --layout-context-width: 320px;  /* fixed right column */
+  --layout-drawer-width: 420px;   /* the overlay where actions commit */
+  --layout-gutter: var(--space-4);
+
+  /* Panel widths. Three sizes only — the width signals how much
+     attention the data deserves. */
+  --panel-large: 760px;
+  --panel-medium: 420px;
+  --panel-small: 320px;
+}
+
+html {
+  font-family: var(--font-family-body);
+  color: var(--color-text-primary);
+  background: var(--color-canvas);
+}
+
+/* ---------------------------------------------------------------
+   Type utilities. One class per style from the type sheet, so a
+   component applies a complete style rather than reassembling
+   size + line-height + weight + tracking by hand.
+   --------------------------------------------------------------- */
+
+.text-button-l,
+.text-button-m,
+.text-button-s {
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-medium);
+}
+
+.text-button-l {
+  font-size: var(--text-button-l-size);
+  line-height: var(--text-button-l-line-height);
+  letter-spacing: var(--text-button-l-tracking);
+}
+
+.text-button-m {
+  font-size: var(--text-button-m-size);
+  line-height: var(--text-button-m-line-height);
+  letter-spacing: var(--text-button-m-tracking);
+}
+
+.text-button-s {
+  font-size: var(--text-button-s-size);
+  line-height: var(--text-button-s-line-height);
+  letter-spacing: var(--text-button-s-tracking);
+}
+
+.text-subheading-m,
+.text-subheading-s,
+.text-subheading-xs,
+.text-subheading-2xs {
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+}
+
+.text-subheading-m {
+  font-size: var(--text-subheading-m-size);
+  line-height: var(--text-subheading-m-line-height);
+  letter-spacing: var(--text-subheading-m-tracking);
+}
+
+.text-subheading-s {
+  font-size: var(--text-subheading-s-size);
+  line-height: var(--text-subheading-s-line-height);
+  letter-spacing: var(--text-subheading-s-tracking);
+}
+
+.text-subheading-xs {
+  font-size: var(--text-subheading-xs-size);
+  line-height: var(--text-subheading-xs-line-height);
+  letter-spacing: var(--text-subheading-xs-tracking);
+}
+
+.text-subheading-2xs {
+  font-size: var(--text-subheading-2xs-size);
+  line-height: var(--text-subheading-2xs-line-height);
+  letter-spacing: var(--text-subheading-2xs-tracking);
+}
+
+.text-tag-l,
+.text-tag-m,
+.text-tag-s {
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-medium);
+}
+
+.text-tag-l {
+  font-size: var(--text-tag-l-size);
+  line-height: var(--text-tag-l-line-height);
+  letter-spacing: var(--text-tag-l-tracking);
+}
+
+.text-tag-m {
+  font-size: var(--text-tag-m-size);
+  line-height: var(--text-tag-m-line-height);
+  letter-spacing: var(--text-tag-m-tracking);
+}
+
+.text-tag-s {
+  font-size: var(--text-tag-s-size);
+  line-height: var(--text-tag-s-line-height);
+  letter-spacing: var(--text-tag-s-tracking);
+}
+
+.text-paragraph-l,
+.text-paragraph-m,
+.text-paragraph-s,
+.text-paragraph-xs,
+.text-paragraph-2xs {
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-regular);
+}
+
+.text-paragraph-l {
+  font-size: var(--text-paragraph-l-size);
+  line-height: var(--text-paragraph-l-line-height);
+  letter-spacing: var(--text-paragraph-l-tracking);
+}
+
+.text-paragraph-m {
+  font-size: var(--text-paragraph-m-size);
+  line-height: var(--text-paragraph-m-line-height);
+  letter-spacing: var(--text-paragraph-m-tracking);
+}
+
+.text-paragraph-s {
+  font-size: var(--text-paragraph-s-size);
+  line-height: var(--text-paragraph-s-line-height);
+  letter-spacing: var(--text-paragraph-s-tracking);
+}
+
+.text-paragraph-xs {
+  font-size: var(--text-paragraph-xs-size);
+  line-height: var(--text-paragraph-xs-line-height);
+  letter-spacing: var(--text-paragraph-xs-tracking);
+}
+
+.text-paragraph-2xs {
+  font-size: var(--text-paragraph-2xs-size);
+  line-height: var(--text-paragraph-2xs-line-height);
+  letter-spacing: var(--text-paragraph-2xs-tracking);
+}
+
+.text-docs-label {
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--text-docs-label-size);
+  line-height: var(--text-docs-label-line-height);
+  letter-spacing: var(--text-docs-label-tracking);
+}
+
+.text-docs-paragraph {
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--text-docs-paragraph-size);
+  line-height: var(--text-docs-paragraph-line-height);
+  letter-spacing: var(--text-docs-paragraph-tracking);
+}
+
+/* Tabular figures for any numeric value in a column. */
+.numeric {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hero figure — the single headline number in a panel. Sora H5 from the
+   display scale; no off-scale size is introduced. */
+.text-hero-figure {
+  font-family: var(--font-family-display);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--text-h5-size);
+  line-height: var(--text-h5-line-height);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.font-regular {
+  font-weight: var(--font-weight-regular);
+}
+
+.font-medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.font-semibold {
+  font-weight: var(--font-weight-semibold);
+}
