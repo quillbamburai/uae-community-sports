@@ -304,10 +304,11 @@ export function CourtDetail({ courtId, go }: { courtId: string; go: (v: AppView)
   const court = courtById(courtId)!
   const courtSlots = slots.filter((s) => s.courtId === courtId && s.available)
   const [picked, setPicked] = useState(courtSlots[0]?.id)
+  const chosen = courtSlots.find((s) => s.id === picked)
 
   return (
-    <Screen pad={false}>
-      <div className="relative">
+    <Screen pad={false} fill>
+      <div className="relative shrink-0">
         <CourtImage kind={court.image} height={220} sport={court.sport} />
         <div className="absolute left-5 top-4">
           <button type="button" onClick={() => go({ name: "browse" })} aria-label="Back" className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-field)]" style={{ background: COLOR.surface, color: COLOR.text }}>
@@ -318,7 +319,7 @@ export function CourtDetail({ courtId, go }: { courtId: string; go: (v: AppView)
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col gap-5 px-5 pb-8 pt-5">
+      <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-5 pb-5 pt-5">
         <div className="flex flex-col gap-1.5">
           <span className="flex items-center gap-2">
             <Pill tone="brand">{court.sport}</Pill>
@@ -361,17 +362,28 @@ export function CourtDetail({ courtId, go }: { courtId: string; go: (v: AppView)
           </div>
         </div>
 
-        <div className="mt-auto flex flex-col gap-3">
-          <div className="flex items-center justify-between">
-            <span className={TYPE.meta} style={{ color: COLOR.muted }}>1 hour</span>
-            <span className="numeric" style={{ fontFamily: "var(--font-family-display)", fontWeight: 600, fontSize: 22, color: COLOR.text }}>
-              {money(court.pricePerHour)}
-            </span>
-          </div>
-          <Button onClick={() => picked && go({ name: "confirm", courtId, slotId: picked })}>
-            Continue
-          </Button>
+      </div>
+
+      {/* The action sits on the fold, not at the end of the content — the
+          price and CTA are visible whatever the court's slot count. */}
+      <div
+        className="flex shrink-0 flex-col gap-3 px-5 pb-6 pt-4"
+        style={{ background: COLOR.surface, borderTop: `1px solid ${COLOR.hairline}` }}
+      >
+        <div className="flex items-center justify-between">
+          <span className={TYPE.meta} style={{ color: COLOR.muted }}>
+            {chosen ? `${chosen.start}–${chosen.end} · 1 hour` : "Select a time"}
+          </span>
+          <span className="numeric" style={{ fontFamily: "var(--font-family-display)", fontWeight: 600, fontSize: 22, color: COLOR.text }}>
+            {money(court.pricePerHour)}
+          </span>
         </div>
+        <Button
+          disabled={!picked}
+          onClick={() => picked && go({ name: "confirm", courtId, slotId: picked })}
+        >
+          Continue
+        </Button>
       </div>
     </Screen>
   )

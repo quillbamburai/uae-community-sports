@@ -10,14 +10,24 @@ import { COLOR, TYPE } from "@/components/mid-fidelity"
 export function Screen({
   children,
   pad = true,
+  fill = false,
 }: {
   children: React.ReactNode
   pad?: boolean
+  /** Pin to the viewport height, for screens with a footer on the fold. */
+  fill?: boolean
 }) {
   return (
     <div
       className={`mx-auto flex w-full max-w-[420px] flex-col ${pad ? "px-5" : ""}`}
-      style={{ minHeight: "100dvh", background: COLOR.canvas }}
+      style={{
+        minHeight: "100dvh",
+        /* `fill` pins the screen to the viewport so a footer can sit on the
+           fold. Without it the screen grows and the page scrolls — which is
+           what a long list wants. */
+        ...(fill ? { height: "100dvh" } : null),
+        background: COLOR.canvas,
+      }}
     >
       {children}
     </div>

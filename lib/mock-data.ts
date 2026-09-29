@@ -64,14 +64,46 @@ export const courts: Court[] = [
   },
 ]
 
+/**
+ * A day's slots per court. Only `available: true` rows are offered — the
+ * browse list never shows a greyed-out slot, because a slot you cannot book
+ * is not information, it is noise.
+ */
 export const slots: Slot[] = [
+  // Al Rahba Pitch 3 — football
   { id: "s1", courtId: "pitch-3", date: "2026-12-14", start: "14:30", end: "15:30", available: true },
-  { id: "s2", courtId: "pitch-1", date: "2026-12-14", start: "15:00", end: "16:00", available: true, discountPct: 50 },
-  { id: "s3", courtId: "padel-1", date: "2026-12-14", start: "16:00", end: "17:00", available: true },
-  { id: "s4", courtId: "padel-2", date: "2026-12-14", start: "17:30", end: "18:30", available: true },
-  { id: "s5", courtId: "tennis-2", date: "2026-12-14", start: "18:00", end: "19:00", available: true },
-  { id: "s6", courtId: "badminton-4", date: "2026-12-14", start: "19:00", end: "20:00", available: true },
+  { id: "s1b", courtId: "pitch-3", date: "2026-12-14", start: "16:00", end: "17:00", available: true },
+  { id: "s1c", courtId: "pitch-3", date: "2026-12-14", start: "17:00", end: "18:00", available: false },
+  { id: "s1d", courtId: "pitch-3", date: "2026-12-14", start: "18:30", end: "19:30", available: true },
   { id: "s7", courtId: "pitch-3", date: "2026-12-14", start: "20:00", end: "21:00", available: true },
+
+  // Al Rahba Pitch 1 — football
+  { id: "s2", courtId: "pitch-1", date: "2026-12-14", start: "15:00", end: "16:00", available: true, discountPct: 50 },
+  { id: "s2b", courtId: "pitch-1", date: "2026-12-14", start: "17:30", end: "18:30", available: true },
+  { id: "s2c", courtId: "pitch-1", date: "2026-12-14", start: "19:00", end: "20:00", available: true },
+  { id: "s2d", courtId: "pitch-1", date: "2026-12-14", start: "20:30", end: "21:30", available: true },
+
+  // Marina Padel 1
+  { id: "s3", courtId: "padel-1", date: "2026-12-14", start: "16:00", end: "17:00", available: true },
+  { id: "s3b", courtId: "padel-1", date: "2026-12-14", start: "17:00", end: "18:00", available: true },
+  { id: "s3c", courtId: "padel-1", date: "2026-12-14", start: "18:00", end: "19:00", available: false },
+  { id: "s3d", courtId: "padel-1", date: "2026-12-14", start: "19:00", end: "20:00", available: true },
+  { id: "s3e", courtId: "padel-1", date: "2026-12-14", start: "20:00", end: "21:00", available: true },
+  { id: "s3f", courtId: "padel-1", date: "2026-12-14", start: "21:00", end: "22:00", available: true },
+
+  // Marina Padel 2
+  { id: "s4", courtId: "padel-2", date: "2026-12-14", start: "17:30", end: "18:30", available: true },
+  { id: "s4b", courtId: "padel-2", date: "2026-12-14", start: "19:30", end: "20:30", available: true },
+  { id: "s4c", courtId: "padel-2", date: "2026-12-14", start: "21:00", end: "22:00", available: true },
+
+  // Corniche Court 2 — tennis
+  { id: "s5", courtId: "tennis-2", date: "2026-12-14", start: "18:00", end: "19:00", available: true },
+  { id: "s5b", courtId: "tennis-2", date: "2026-12-14", start: "19:00", end: "20:00", available: true },
+  { id: "s5c", courtId: "tennis-2", date: "2026-12-14", start: "20:00", end: "21:00", available: true },
+
+  // Community Hall 4 — badminton
+  { id: "s6", courtId: "badminton-4", date: "2026-12-14", start: "19:00", end: "20:00", available: true },
+  { id: "s6b", courtId: "badminton-4", date: "2026-12-14", start: "20:00", end: "21:00", available: true },
 ]
 
 /**
