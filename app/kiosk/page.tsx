@@ -19,7 +19,12 @@ const STATES: { id: CourtState; label: string }[] = [
 export default function KioskPage() {
   const [state, setState] = useState<CourtState>("awaiting")
   return (
-    <div className="flex min-h-[100dvh] flex-col items-center gap-6 py-8" style={{ background: "#0C0B09" }}>
+    /* The device is 820 x 1180. On a laptop that overflows, so the frame is
+       scaled down to fit the window rather than being cropped. */
+    <div
+      className="flex min-h-[100dvh] flex-col items-center gap-6 overflow-x-hidden py-8"
+      style={{ background: "#0C0B09" }}
+    >
       <div className="flex flex-wrap items-center justify-center gap-2">
         {STATES.map((s) => (
           <button
@@ -37,8 +42,12 @@ export default function KioskPage() {
           </button>
         ))}
       </div>
-      <div style={{ boxShadow: "0 24px 80px rgba(0,0,0,0.5)", borderRadius: 18, overflow: "hidden" }}>
-        <Kiosk state={state} onStateChange={setState} />
+      {/* The device is 820 x 1180, which overflows a laptop window, so the
+          whole frame scales down to fit rather than being cropped. */}
+      <div className="origin-top scale-[0.55] sm:scale-[0.62] md:scale-75 lg:scale-90 xl:scale-100">
+        <div style={{ boxShadow: "0 24px 80px rgba(0,0,0,0.5)", borderRadius: 18, overflow: "hidden" }}>
+          <Kiosk state={state} onStateChange={setState} />
+        </div>
       </div>
       <span className="text-[12px]" style={{ color: "rgba(255,255,255,0.4)" }}>
         Vertical iPad · mounted at the court
