@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import {
-  Browse, Confirm, CourtDetail, Home, Payment, PostSession, Success, Trust, WalkIn,
+  Browse, Confirm, CourtDetail, Home, Payment, PostSession, Processing, Success,
+  Trust, WalkIn,
   type AppView,
 } from "@/components/app-screens"
 
@@ -13,15 +14,24 @@ import {
 export default function AppPage() {
   const [view, setView] = useState<AppView>({ name: "home" })
 
-  switch (view.name) {
-    case "browse": return <Browse go={setView} />
-    case "court": return <CourtDetail courtId={view.courtId} go={setView} />
-    case "confirm": return <Confirm courtId={view.courtId} slotId={view.slotId} go={setView} />
-    case "pay": return <Payment courtId={view.courtId} slotId={view.slotId} go={setView} />
-    case "success": return <Success courtId={view.courtId} slotId={view.slotId} go={setView} />
-    case "walkin": return <WalkIn go={setView} />
-    case "trust": return <Trust go={setView} />
-    case "post-session": return <PostSession go={setView} />
-    default: return <Home go={setView} />
+  const screen = () => {
+    switch (view.name) {
+      case "browse": return <Browse go={setView} />
+      case "court": return <CourtDetail courtId={view.courtId} go={setView} />
+      case "confirm": return <Confirm courtId={view.courtId} slotId={view.slotId} go={setView} />
+      case "pay": return <Payment courtId={view.courtId} slotId={view.slotId} go={setView} />
+      case "processing": return (
+        <Processing
+          courtId={view.courtId} slotId={view.slotId} method={view.method} go={setView}
+        />
+      )
+      case "success": return <Success courtId={view.courtId} slotId={view.slotId} go={setView} />
+      case "walkin": return <WalkIn go={setView} />
+      case "trust": return <Trust go={setView} />
+      case "post-session": return <PostSession go={setView} />
+      default: return <Home go={setView} />
+    }
   }
+
+  return <div className="device-stage">{screen()}</div>
 }

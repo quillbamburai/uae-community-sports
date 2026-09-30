@@ -8,3 +8,23 @@ html,
 body {
   min-height: 100%;
 }
+
+/* Alliance No.1 is the brand face and applies to everything, not only the
+   headings that name it explicitly. Without this, Tailwind's preflight leaves
+   body copy on the system sans. */
+body {
+  font-family: var(--font-family-body);
+}
+
+/* The phone app is a fixed 440x956 device, centred in the window with all
+   scrolling inside the frame. Scoped to the app route so the kiosk, which is
+   820x1180 and has its own page, is not clipped by it. */
+body:has(> .device-stage) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  margin: 0;
+  background: #A9B2BC;
+  overflow: hidden;
+}

@@ -4,9 +4,9 @@ import type {
 
 /** The person using the app. */
 export const user = {
-  name: "Quill",
-  fullName: "David Quill",
-  trustScore: 86,
+  name: "Shamma",
+  fullName: "Shamma Al Mazrouei",
+  trustScore: 91,
   /** Credits held jointly with connected members — "in the pot". */
   potCredit: 140,
   connectedMembers: 6,
@@ -36,37 +36,89 @@ export const courts: Court[] = [
     id: "pitch-3", name: "Al Rahba Pitch 3", sport: "Football", capacity: 12,
     surface: "3G artificial", amenities: ["Floodlit", "Changing rooms", "Parking"],
     image: "football-1", photo: "/images/football-outside.jpg", rating: "4.7", reviews: 302,
+    dimensions: "40x20m", dimensionsNote: "Five-a-side pitch for up to 12 people.",
     pricePerHour: 180,
   },
   {
     id: "pitch-1", name: "Al Rahba Pitch 1", sport: "Football", capacity: 12,
     surface: "3G artificial", amenities: ["Floodlit", "Changing rooms", "Spectator seating"],
     image: "football-2", photo: "/images/football-outside2.jpeg", rating: "4.5", reviews: 96,
+    dimensions: "40x20m", dimensionsNote: "Five-a-side pitch for up to 12 people.",
+    popular: true,
     pricePerHour: 180,
   },
   {
     id: "padel-1", name: "Marina Padel 1", sport: "Padel", capacity: 4,
     surface: "Glass court", amenities: ["Floodlit", "Racket hire"],
     image: "padel-1", photo: "/images/Padel1.png", rating: "4.8", reviews: 214,
+    dimensions: "10x20m", dimensionsNote: "Professional size padel court for up to 4 people.",
     pricePerHour: 120,
   },
   {
     id: "padel-2", name: "Marina Padel 2", sport: "Padel", capacity: 4,
     surface: "Glass court", amenities: ["Floodlit", "Racket hire", "Covered"],
     image: "padel-2", photo: "/images/padel2.jpg", rating: "4.6", reviews: 180,
+    dimensions: "10x20m", dimensionsNote: "Professional size padel court for up to 4 people.",
+    popular: true,
     pricePerHour: 140,
   },
   {
     id: "tennis-2", name: "Corniche Court 2", sport: "Tennis", capacity: 4,
     surface: "Acrylic hard", amenities: ["Floodlit", "Ball machine"],
     image: "tennis-1", photo: "/images/Tennis1.png", rating: "4.4", reviews: 138,
+    dimensions: "11x24m", dimensionsNote: "Full size tennis court for up to 4 people.",
     pricePerHour: 100,
   },
   {
     id: "badminton-4", name: "Community Hall 4", sport: "Badminton", capacity: 4,
     surface: "Sprung timber", amenities: ["Indoor", "Air conditioned", "Racket hire"],
     image: "badminton-1", photo: "/images/Tennis1.png", rating: "4.3", reviews: 74,
+    dimensions: "6x13m", dimensionsNote: "Regulation badminton court for up to 4 people.",
     pricePerHour: 80,
+  },
+  {
+    id: "pitch-5", name: "Khalifa Park Pitch 5", sport: "Football", capacity: 12,
+    surface: "3G artificial", amenities: ["Floodlit", "Changing rooms", "Cafe"],
+    image: "football-1", photo: "/images/football-outside.jpg", rating: "4.6", reviews: 148,
+    dimensions: "40x20m", dimensionsNote: "Five-a-side pitch for up to 12 people.",
+    pricePerHour: 160,
+  },
+  {
+    id: "padel-4", name: "Yas Padel 4", sport: "Padel", capacity: 4,
+    surface: "Glass court", amenities: ["Floodlit", "Racket hire", "Covered"],
+    image: "padel-1", photo: "/images/Padel1.png", rating: "4.9", reviews: 271,
+    dimensions: "10x20m", dimensionsNote: "Professional size padel court for up to 4 people.",
+    pricePerHour: 150,
+  },
+  {
+    id: "tennis-1", name: "Corniche Court 1", sport: "Tennis", capacity: 4,
+    surface: "Acrylic hard", amenities: ["Floodlit", "Coaching"],
+    image: "tennis-1", photo: "/images/Tennis1.png", rating: "4.6", reviews: 192,
+    dimensions: "11x24m", dimensionsNote: "Full size tennis court for up to 4 people.",
+    pricePerHour: 110,
+  },
+  {
+    id: "tennis-5", name: "Zayed Sports Court 5", sport: "Tennis", capacity: 4,
+    surface: "Clay", amenities: ["Floodlit", "Ball machine", "Spectator seating"],
+    image: "tennis-1", photo: "/images/Tennis1.png", rating: "4.5", reviews: 87,
+    dimensions: "11x24m", dimensionsNote: "Full size tennis court for up to 4 people.",
+    popular: true,
+    pricePerHour: 130,
+  },
+  {
+    id: "badminton-2", name: "Community Hall 2", sport: "Badminton", capacity: 4,
+    surface: "Sprung timber", amenities: ["Indoor", "Air conditioned"],
+    image: "badminton-1", photo: "/images/Tennis1.png", rating: "4.5", reviews: 118,
+    dimensions: "6x13m", dimensionsNote: "Regulation badminton court for up to 4 people.",
+    popular: true,
+    pricePerHour: 80,
+  },
+  {
+    id: "badminton-7", name: "Al Bateen Hall 7", sport: "Badminton", capacity: 4,
+    surface: "Sprung timber", amenities: ["Indoor", "Air conditioned", "Racket hire"],
+    image: "badminton-1", photo: "/images/Tennis1.png", rating: "4.2", reviews: 63,
+    dimensions: "6x13m", dimensionsNote: "Regulation badminton court for up to 4 people.",
+    pricePerHour: 70,
   },
 ]
 
@@ -110,6 +162,33 @@ export const slots: Slot[] = [
   // Community Hall 4 — badminton
   { id: "s6", courtId: "badminton-4", date: "2026-12-14", start: "19:00", end: "20:00", available: true },
   { id: "s6b", courtId: "badminton-4", date: "2026-12-14", start: "20:00", end: "21:00", available: true },
+
+  // Khalifa Park Pitch 5 — football
+  { id: "s8", courtId: "pitch-5", date: "2026-12-14", start: "16:30", end: "17:30", available: true },
+  { id: "s8b", courtId: "pitch-5", date: "2026-12-14", start: "18:00", end: "19:00", available: true },
+  { id: "s8c", courtId: "pitch-5", date: "2026-12-14", start: "19:30", end: "20:30", available: true },
+
+  // Yas Padel 4
+  { id: "s9", courtId: "padel-4", date: "2026-12-14", start: "15:30", end: "16:30", available: true },
+  { id: "s9b", courtId: "padel-4", date: "2026-12-14", start: "18:30", end: "19:30", available: true },
+  { id: "s9c", courtId: "padel-4", date: "2026-12-14", start: "20:30", end: "21:30", available: true },
+
+  // Corniche Court 1 — tennis
+  { id: "s10", courtId: "tennis-1", date: "2026-12-14", start: "16:00", end: "17:00", available: true },
+  { id: "s10b", courtId: "tennis-1", date: "2026-12-14", start: "17:30", end: "18:30", available: true },
+  { id: "s10c", courtId: "tennis-1", date: "2026-12-14", start: "20:00", end: "21:00", available: true },
+
+  // Zayed Sports Court 5 — tennis
+  { id: "s11", courtId: "tennis-5", date: "2026-12-14", start: "17:00", end: "18:00", available: true },
+  { id: "s11b", courtId: "tennis-5", date: "2026-12-14", start: "19:30", end: "20:30", available: true },
+
+  // Community Hall 2 — badminton
+  { id: "s12", courtId: "badminton-2", date: "2026-12-14", start: "18:00", end: "19:00", available: true },
+  { id: "s12b", courtId: "badminton-2", date: "2026-12-14", start: "21:00", end: "22:00", available: true },
+
+  // Al Bateen Hall 7 — badminton
+  { id: "s13", courtId: "badminton-7", date: "2026-12-14", start: "17:30", end: "18:30", available: true },
+  { id: "s13b", courtId: "badminton-7", date: "2026-12-14", start: "20:00", end: "21:00", available: true },
 ]
 
 /**
@@ -154,12 +233,12 @@ export const bookings: Booking[] = [
     status: "awaiting", perk: "Free coffee", paid: 180,
   },
   {
-    id: "GS-4390", courtId: "padel-1", slotId: "s3", bookedFor: "David Quill",
+    id: "GS-4390", courtId: "padel-1", slotId: "s3", bookedFor: "Shamma Al Mazrouei",
     date: "2026-12-02", start: "18:00", end: "19:00", players: 4,
     status: "completed", paid: 120,
   },
   {
-    id: "GS-4361", courtId: "tennis-2", slotId: "s5", bookedFor: "David Quill",
+    id: "GS-4361", courtId: "tennis-2", slotId: "s5", bookedFor: "Shamma Al Mazrouei",
     date: "2026-11-28", start: "07:00", end: "08:00", players: 2,
     status: "completed", paid: 100,
   },

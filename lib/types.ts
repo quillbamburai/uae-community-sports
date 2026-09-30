@@ -26,6 +26,12 @@ export type Court = {
   rating: string
   reviews: number
   pricePerHour: number
+  /** Playing area, e.g. "10x20m" — the figure on the court's detail screen. */
+  dimensions: string
+  /** One line explaining what the dimensions mean for a booking. */
+  dimensionsNote: string
+  /** Carries the "Popular" badge on the browse card instead of a discount. */
+  popular?: boolean
 }
 
 export type Slot = {

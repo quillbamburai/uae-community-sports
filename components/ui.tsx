@@ -14,22 +14,30 @@ export function Screen({
 }: {
   children: React.ReactNode
   pad?: boolean
-  /** Pin to the viewport height, for screens with a footer on the fold. */
+  /** Retained for call sites; the device frame is fixed either way. */
   fill?: boolean
 }) {
   return (
+    /* The app is a phone, so it is drawn as one: a fixed 440x956 device that
+       does not grow with its content. Anything longer scrolls inside the
+       frame, which is what keeps a sticky footer or nav bar on the fold. */
     <div
-      className={`mx-auto flex w-full max-w-[420px] flex-col ${pad ? "px-5" : ""}`}
+      className="relative mx-auto flex flex-col overflow-hidden"
       style={{
-        minHeight: "100dvh",
-        /* `fill` pins the screen to the viewport so a footer can sit on the
-           fold. Without it the screen grows and the page scrolls — which is
-           what a long list wants. */
-        ...(fill ? { height: "100dvh" } : null),
+        width: 440,
+        height: 956,
+        maxHeight: "100dvh",
         background: COLOR.canvas,
       }}
     >
-      {children}
+      {/* `[&>*]:shrink-0` keeps fixed-height cards from being squeezed by the
+          flex column when the content is taller than the device. */}
+      <div
+        className={`flex min-h-0 flex-1 flex-col overflow-y-auto [&>*]:shrink-0 ${pad ? "px-5" : ""}`}
+        style={{ scrollbarWidth: "none" }}
+      >
+        {children}
+      </div>
     </div>
   )
 }
