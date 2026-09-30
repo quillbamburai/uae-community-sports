@@ -941,12 +941,12 @@ export function CourtDetail({ courtId, go }: { courtId: string; go: (v: AppView)
           count of what is not shown. */}
       <div className="flex shrink-0 flex-col gap-1.5 px-1.5 pt-6">
         <div className="flex gap-1.5">
-          <PhotoTile src={asset(court.photo)} w={153} corner="tl" onClick={() => go({ name: "browse" })} />
-          <PhotoTile src={asset(court.photo)} w={269} corner="tr" exposure={-0.61} />
+          <PhotoTile src={court.photo} w={153} corner="tl" onClick={() => go({ name: "browse" })} />
+          <PhotoTile src={court.photo} w={269} corner="tr" exposure={-0.61} />
         </div>
         <div className="flex gap-1.5">
-          <PhotoTile src={asset(court.photo)} w={269} corner="bl" />
-          <PhotoTile src={asset(court.photo)} w={153} corner="br" more="05+" />
+          <PhotoTile src={court.photo} w={269} corner="bl" />
+          <PhotoTile src={court.photo} w={153} corner="br" more="05+" />
         </div>
       </div>
 
