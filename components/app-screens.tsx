@@ -1046,8 +1046,9 @@ export function CourtDetail({ courtId, go }: { courtId: string; go: (v: AppView)
         })}
       </div>
 
-      {/* Clears the sticky footer, so the last row of times is reachable. */}
-      <div className="h-[262px] shrink-0" />
+      {/* Sits the slot grid 84px clear of the footer. The footer is sticky, so
+          this is the gap that shows once the page is scrolled to the end. */}
+      <div className="h-[84px] shrink-0" />
 
       {/* The footer states the rule before the commitment, not after it. */}
       <footer className="sticky bottom-0 mt-auto pt-5" style={{ background: COLOR.surface }}>
